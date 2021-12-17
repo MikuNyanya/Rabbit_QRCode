@@ -13,6 +13,9 @@
 - [ ] 二维码样式
 - [ ] 背景图片
 
+<br/><br/>
+大概，像这样      
+![ ](https://github.com/MikuNyanya/Rabbit_QRCode/blob/master/data/rabbitqr.png)
 
 ### 更新日志      
 #### 2021年12月17日        
