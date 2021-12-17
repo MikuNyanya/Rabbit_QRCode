@@ -33,8 +33,8 @@ public class RabbitMatrixToImageWriter {
         int colorType = config.getType();
         int onColor = config.getPixelOnColor();
         int offColor = config.getPixelOffColor();
-        int onColor1 = config.getOnColor1();
-        int onColor2 = config.getOnColor2();
+        int onColor1 = config.getOnColorStart();
+        int onColor2 = config.getOnColorEnd();
         int[] rowPixels = new int[width];
         BitArray row = new BitArray(width);
 

@@ -39,10 +39,10 @@ public class RabbitMatrixToImageConfig {
      */
     @Getter
     @Setter
-    private int onColor1;
+    private int onColorStart;
     @Getter
     @Setter
-    private int onColor2;
+    private int onColorEnd;
 
     public RabbitMatrixToImageConfig() {
         this(-16777216, -1);
@@ -54,11 +54,11 @@ public class RabbitMatrixToImageConfig {
     }
 
     //渐变参数初始化
-    public void initConfigGradientColor(int offColor,int onColor1, int onColor2) {
+    public void initConfigGradientColor(int offColor, int onColorStart, int onColorEnd) {
         this.type = 2;
         this.offColor = offColor;
-        this.onColor1 = onColor1;
-        this.onColor2 = onColor2;
+        this.onColorStart = onColorStart;
+        this.onColorEnd = onColorEnd;
     }
 
     public int getPixelOnColor() {
