@@ -1,4 +1,4 @@
-package cn.mikulink.rabbitqrcode;
+package cn.mikulink.rabbitqrcode.normal;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -22,7 +22,7 @@ import java.util.Map;
  * For the Reisen
  * 二维码工具
  */
-public class QRCodeService {
+public class QRCodeUtil {
     //默认二维码尺寸
     public static final int QRCODE_WIDTH_DEFAULE = 300;
     public static final int QRCODE_HEIGHT_DEFAULE = 300;

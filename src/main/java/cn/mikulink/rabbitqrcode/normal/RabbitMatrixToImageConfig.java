@@ -1,4 +1,4 @@
-package cn.mikulink.rabbitqrcode;
+package cn.mikulink.rabbitqrcode.normal;
 
 import lombok.Getter;
 import lombok.Setter;
