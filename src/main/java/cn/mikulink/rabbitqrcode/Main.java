@@ -22,9 +22,10 @@ public class Main {
         //二维码宽度
         int height = 500;
         //二维码前景颜色
-        Color onColor = new Color(0xFFFF96A0);
+//        Color onColor = new Color(0xFFFF96A0);
+        Color onColor = new Color(0x93005C);
         //二维码背景颜色
-        Color bgColor = new Color(0xFFFFFFFF);
+        Color bgColor = new Color(0xFFFFFF);
         //二维码渐变 起始颜色
         Color onColorStart = new Color(0xFFFF96A0);
         //二维码渐变 结束颜色
@@ -32,7 +33,7 @@ public class Main {
         //中心logo
         String logoUrl = "https://i1.hdslb.com/bfs/face/d973f5f34a9b102a9a0d6f216f806c225d66912f.jpg";
         //二维码内容
-        String context = "https://tvax1.sinaimg.cn/large/ec43126fgy1gswm8zmzcqj20rs124tm9.jpg";
+        String context = "https://img9.doubanio.com/view/group_topic/raw/public/p502232925.mp4";
 //        String context = "https://tvax2.sinaimg.cn//large/ec43126fgy1gt6b4v977uj20wv1ctjys.jpg";
         //二维码输出路径
         String outPutPath = "E:\\";
@@ -71,8 +72,8 @@ public class Main {
 //                    VisualQRCode.POSITION_DETECTION_SHAPE_MODEL_ROUND_RECTANGLE, VisualQRCode.FILL_SHAPE_MODEL_RECTANGLE);
 
 
-            VisualQRCodeUtil.createQRCode(context, "E:\\logo.jpg", outPutPath+"setuqr2.png", 'H',
-                    new Color(24, 153, 151, 255), null, null, null, true,
+            VisualQRCodeUtil.createQRCode(context, "E:\\asd.jpg", outPutPath+"out_2.png", 'H',
+                    onColor, null, null, null, true,
                     VisualQRCodeUtil.POSITION_DETECTION_SHAPE_MODEL_RECTANGLE, VisualQRCodeUtil.FILL_SHAPE_MODEL_CIRCLE);
 
 

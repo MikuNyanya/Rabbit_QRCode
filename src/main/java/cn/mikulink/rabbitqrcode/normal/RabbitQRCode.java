@@ -51,8 +51,6 @@ public class RabbitQRCode {
         hints.put(EncodeHintType.MARGIN, 0);
         // 创建二维码
         QRCode qrCode = Encoder.encode(content, qrCodeConfig.getLevel(), hints);
-        int[] alignmentPatternCenters = qrCode.getVersion().getAlignmentPatternCenters();
-
 
         //二维码长宽
         int qrCodeSize = qrCodeConfig.getWidth();
@@ -62,68 +60,7 @@ public class RabbitQRCode {
         BitMatrix bitMatrix = renderResult(qrCode, qrCodeSize, qrCodeSize, quietZone);
 
         //转化为二维码图片对象
-        BufferedImage bufferedImage = toBufferedImage(bitMatrix, qrCodeConfig, alignmentPatternCenters);
-
-
-        //背景图
-        if (null != qrCodeConfig.getBgImgPath()) {
-            BufferedImage bgImg = ImageIO.read(new File(qrCodeConfig.getBgImgPath()));
-
-            //需要是3的倍数
-            int scale = 3;
-
-            int[][] pattern = new int[bufferedImage.getWidth() - scale * 4 * 2][bufferedImage.getWidth() - scale * 4 * 2];
-
-            //根据纠错等级，标记空白处？
-            for (int alignmentPatternCenter : alignmentPatternCenters) {
-                for (int patternCenter : alignmentPatternCenters) {
-                    if (alignmentPatternCenter == 6 && patternCenter == alignmentPatternCenters[alignmentPatternCenters.length - 1] ||
-                            (patternCenter == 6 && alignmentPatternCenter == alignmentPatternCenters[alignmentPatternCenters.length - 1]) ||
-                            (alignmentPatternCenter == 6 && patternCenter == 6)) {
-                        continue;
-                    } else {
-                        int initx = scale * (alignmentPatternCenter - 2);
-                        int inity = scale * (patternCenter - 2);
-                        for (int x = initx; x < initx + scale * 5; x++) {
-                            for (int y = inity; y < inity + scale * 5; y++) {
-                                pattern[x][y] = 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            int imageSize = bgImg.getWidth();
-
-            for (int i = 0; i < imageSize; i++) {
-                for (int j = 0; j < imageSize; j++) {
-                    if ((i * 3 / scale) % 3 == 1 && (j * 3 / scale) % 3 == 1) {
-                        continue;
-                    }
-                    if (i < scale * 4 * 2 && (j < scale * 4 * 2 || j > imageSize - (scale * 4 * 2 + 1))) {
-                        continue;
-                    }
-                    if (i > imageSize - (scale * 4 * 2 + 1) && j < scale * 4 * 2) {
-                        continue;
-                    }
-
-                    if(pattern.length<=i ||pattern[i].length<=j){
-                        bufferedImage.setRGB(i + scale * 4, j + scale * 4, bgImg.getRGB(i, j));
-                        continue;
-                    }
-                    if (pattern[i][j] != 1) {
-                        continue;
-                    }
-
-//                    scaledQRImage.setPixel(i + scale * 4, j + scale * 4, blackWhite.getPixel(i, j));
-                    bufferedImage.setRGB(i + scale * 4, j + scale * 4, bgImg.getRGB(i, j));
-//                    bufferedImage.setRGB(i + scale * 4,j + scale * 4,bgImg.getRGB(i,j), y, width, 1, rowPixels, 0, width);
-                }
-
-            }
-
-            bufferedImage = bgImg;
-        }
+        BufferedImage bufferedImage = toBufferedImage(bitMatrix, qrCodeConfig);
 
         //绘制中心logo
         String logoUrl = qrCodeConfig.getLogoUrl();
@@ -176,13 +113,9 @@ public class RabbitQRCode {
     }
 
     //矩阵图片转为BufferedImage
-    private static BufferedImage toBufferedImage(BitMatrix matrix, RabbitQRCodeConfig config, int[] alignmentPatternCenters) throws IOException {
-//        int scale = 2;
-
+    private static BufferedImage toBufferedImage(BitMatrix matrix, RabbitQRCodeConfig config) throws IOException {
         int width = matrix.getWidth();
         int height = matrix.getHeight();
-//        int width = matrix.getWidth() * scale;
-//        int height = matrix.getHeight() * scale;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         int colorType = config.getColorType();
@@ -191,15 +124,9 @@ public class RabbitQRCode {
         Color bgColor = config.getBgColor();
         Color gradientColorStart = config.getGradientColorStart();
         Color gradientColorEnd = config.getGradientColorEnd();
-//        BufferedImage bgImg = null;
-//        if (null != config.getBgImgPath()) {
-//            bgImg = ImageIO.read(new File(config.getBgImgPath()));
-//        }
 
         int[] rowPixels = new int[width];
         BitArray row = new BitArray(width);
-//        int[] rowPixels = new int[width * scale];
-//        BitArray row = new BitArray(width * scale);
 
         //如果是渐变色，需要计算出从开始到结束，每行需要渐变的r g b数值，然后在每次循环时累加，以达到渐变效果
         double increaseR = 0.0;
@@ -222,11 +149,7 @@ public class RabbitQRCode {
         }
 
         for (int y = 0; y < height; ++y) {
-//            if (y % scale != 0) {
-//                continue;
-//            }
             row = matrix.getRow(y, row);
-//            row = matrix.getRow(y / scale, row);
 
             //渐变色需要先确定当前行使用什么颜色
             int onColorTemp = onColor.getRGB();
@@ -247,20 +170,7 @@ public class RabbitQRCode {
             }
 
             for (int x = 0; x < width; ++x) {
-                //此处区分绘制二维码还是绘制背景
-//                if (x % scale != 0) {
-//                    continue;
-//                }
-//                if (null != bgImg) {
-//                    //画图片，并设置透明
-//                    int imagergbTemp = bgImg.getRGB(x, y);
-//                    Color colorTemp = new Color(imagergbTemp);
-//                    colorTemp = new Color(colorTemp.getRed(),colorTemp.getGreen(),colorTemp.getBlue(),200);
-//                    rowPixels[x] = row.get(x) ? onColorTemp : colorTemp.getRGB();
-//                } else {
-                    rowPixels[x] = row.get(x) ? onColorTemp : bgColor.getRGB();
-//                }
-//                rowPixels[x] = row.get(x / scale) ? onColorTemp : bgColor.getRGB();
+                rowPixels[x] = row.get(x) ? onColorTemp : bgColor.getRGB();
             }
 
             image.setRGB(0, y, width, 1, rowPixels, 0, width);

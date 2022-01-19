@@ -422,7 +422,8 @@ public class VisualQRCodeUtil {
 
         // 二维码颜色
         DF = new Color(DF.getRed(), DF.getGreen(), DF.getBlue(), (int) (255 * 0.75));
-        Color LB = new Color(0, 0, 0, (int) (255 * 0.25));
+//        Color LB = new Color(0, 0, 0, (int) (255 * 0.25));
+        Color LB = new Color(255, 255, 255, (int) (255 * 0.25));
         Color LF = new Color(255, 255, 255, (int) (255 * 0.75));
         // 二维码内容
         byte[] buff = null;
@@ -656,8 +657,7 @@ public class VisualQRCodeUtil {
         } else if (fillPositionDetectionShapeModel == POSITION_DETECTION_SHAPE_MODEL_ROUND_RECTANGLE) {
             // 添加一层遮罩
             g.setColor(LB);
-            // g.fillRect(startXTemp, startYTemp, QRCodeWidthTemp,
-            // QRCodeWidthTemp);
+            // g.fillRect(startXTemp, startYTemp, QRCodeWidthTemp, QRCodeWidthTemp);
             g.fillRoundRect(startXTemp - UNIT_WIDTH, startYTemp - UNIT_WIDTH, QRCodeWidthTemp, QRCodeWidthTemp, (int) (UNIT_WIDTH * 4.5), (int) (UNIT_WIDTH * 4.5));
 
             // 画四个圆滑的大码眼
